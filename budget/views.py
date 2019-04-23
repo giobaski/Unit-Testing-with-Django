@@ -25,7 +25,7 @@ def project_detail(request, project_slug):
     if request.method == 'GET':
         category_list = Category.objects.filter(project=project)
         return render(request,template_name,{'project': project, 'expense_list': expense_list, 'category_list': category_list})
-    elif request.method =='POST':
+    elif request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data['title']
@@ -40,15 +40,16 @@ def project_detail(request, project_slug):
                 amount = amount,
                 category = category
             ).save()
+
     elif request.method == "DELETE":
         id = json.loads(request.body)['id']
         expense = get_object_or_404(Expense, id=id)
         expense.delete()
 
         return HttpResponse('')
+    
+    return HttpResponseRedirect(project_slug)
 
-
-    return redirect('detail', project_slug)
 
 class ProjectCreateView(CreateView):
     model = Project
