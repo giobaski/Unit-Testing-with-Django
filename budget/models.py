@@ -14,6 +14,7 @@ class Project(models.Model):
     def __str__(self):
         return self.name
     
+    @property
     def budget_left(self):
         expense_list = Expense.objects.filter(project = self)
         total_expense_amount = 0
@@ -22,10 +23,10 @@ class Project(models.Model):
 
         return round(self.budget - total_expense_amount)
 
-
+    @property
     def total_transactions(self):
         expense_list = Expense.objects.filter(project=self)
-        return len(expense_list)
+        return expense_list.count()
 
 
 class Category(models.Model):
@@ -47,4 +48,3 @@ class Expense(models.Model):
 
     class Meta:
         ordering = ('-amount',)
-    
